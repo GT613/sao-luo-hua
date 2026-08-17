@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a1012"><meta name="description" content="《闲与仙人扫落花》同人互动剧情游戏：镜花劫。">
+  <title>闲与仙人扫落花：镜花劫</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app" class="app" data-scene="upper">
+  <div class="backdrop" id="backdrop"></div><div class="veil"></div><div class="grain"></div>
+  <div class="petal-field" id="ambientPetals" aria-hidden="true"></div>
+  <header class="topbar hidden" id="topbar">
+    <button class="brand" data-action="home" aria-label="返回题页"><b>镜花劫</b><span>闲与仙人扫落花</span></button>
+    <div class="chapter-mark"><i></i><span id="chapterName">序章 · 情劫</span></div>
+    <nav><button data-action="codex">人物志</button><button data-action="settings" aria-label="设置">音律</button></nav>
+  </header>
+
+  <main id="stage">
+    <section class="screen title-screen active" id="titleScreen">
+      <div class="title-copy">
+        <p class="overline">归鸿落雪 原著 · 同人互动游戏</p>
+        <h1><span>闲与仙人</span><strong>扫落花</strong></h1>
+        <div class="title-rule"><i></i><em>镜 花 劫</em><i></i></div>
+        <p class="poem">愿随夫子天坛上，闲与仙人扫落花。</p>
+        <div class="title-actions">
+          <button class="seal" data-action="new"><b>入世</b><small>开启情劫</small></button>
+          <button class="continue hidden" id="continueBtn" data-action="continue">续前缘 <span id="saveLabel"></span></button>
+          <button class="continue" data-action="campaign">篇章命簿 · 六卷山海</button>
+        </div>
+        <p class="title-foot">佩戴耳机体验更佳 · 进度自动保存</p>
+      </div>
+      <aside class="title-note"><span>第一卷</span><b>神鸢鲛鳞</b><small>可玩序章</small></aside>
+    </section>
+
+    <section class="screen difficulty-screen" id="difficultyScreen">
+      <div class="paper-panel">
+        <p class="section-no">入世之前</p><h2>择一道而行</h2><p class="lead">难度只改变提示与奖励，不会删减剧情。</p>
+        <div class="difficulty-grid">
+          <button class="difficulty" data-difficulty="cloud"><span>壹</span><h3>闲云</h3><p>调查提示常亮，战斗判断宽松，适合沉浸剧情。</p><small>记忆回响 × 1</small></button>
+          <button class="difficulty recommended" data-difficulty="dao"><i>推荐</i><span>贰</span><h3>问道</h3><p>线索需要观察，选择会影响资源与关系。</p><small>记忆回响 × 1.5</small></button>
+          <button class="difficulty" data-difficulty="trial"><span>叁</span><h3>渡劫</h3><p>提示短暂、选择不可回溯，可发现隐藏落花。</p><small>记忆回响 × 2</small></button>
+        </div>
+        <button class="text-link" data-action="home">暂不入世</button>
+      </div>
+    </section>
+
+    <section class="screen story-screen" id="storyScreen">
+      <div class="story-status"><span id="objective">循着命数而行</span><b id="autosave">命簿已记</b></div>
+      <div class="portrait-wrap hidden" id="portraitWrap"><img id="portrait" alt=""><span id="portraitSigil"></span></div>
+      <article class="dialogue" id="dialogue">
+        <div class="speaker-row"><span id="speaker">司命</span><i></i><small id="mood">天门</small></div>
+        <p id="dialogueText"></p><div class="choices" id="choices"></div>
+        <button class="next" id="nextBtn" data-action="next">续 <span>SPACE</span></button>
+      </article>
+    </section>
+
+    <section class="screen explore-screen" id="exploreScreen">
+      <div class="location-card"><p>平泽大陆</p><h2>蛟龙城</h2><span>六月十三 · 丑时将至</span></div>
+      <div class="objective-card"><small>当前目标</small><b>寻找神鸢鲛鳞的线索</b><div><i id="clueBar"></i></div><span><em id="clueCount">0</em> / 3</span></div>
+      <button class="hotspot h-market guided" data-hotspot="market"><em>第一步</em><i></i><b>拍卖行</b><span>点击调查灵力残痕</span></button>
+      <button class="hotspot h-alley locked-guide" data-hotspot="alley"><em>第二步</em><i></i><b>偏巷</b><span>调查可疑鳞片</span></button>
+      <button class="hotspot h-carriage locked-guide" data-hotspot="carriage"><em>第三步</em><i></i><b>江家马车</b><span>确认戒指共鸣</span></button>
+      <div class="explore-tip" id="exploreTip"><b>新手指引</b> 点击标有“第一步”的金色光点，从拍卖行开始调查</div>
+    </section>
+
+    <section class="screen battle-screen" id="battleScreen">
+      <div class="battle-head"><div><small>朝龙秘境 · 湖岸</small><h2>花精 · 寻绿</h2></div><div class="enemy-hp"><span>妖力</span><i><b id="enemyHp"></b></i></div></div>
+      <div class="battle-center"><div class="enemy-orb" id="enemyOrb"><i></i><span>花毒正在聚集</span></div><div class="timing"><span id="battleTimer"></span></div></div>
+      <div class="battle-log" id="battleLog"><b>新手指引：</b>第一回合先点“凝神”，观察花毒从哪一侧袭来。</div>
+      <div class="battle-actions" id="battleActions">
+        <button class="recommended-move" data-move="observe"><em>推荐</em><b>凝神</b><span>观察灵力流向</span><small>稳妥</small></button>
+        <button data-move="seal"><b>止血符</b><span>符纸或许不止能止血</span><small>消耗 1</small></button>
+        <button data-move="dodge"><b>踏风</b><span>抓住破绽闪避</span><small>需判断</small></button>
+      </div>
+      <div class="player-state"><span>卫风</span><i><b id="playerHp"></b></i><em id="playerHpText">气血 100</em></div>
+    </section>
+
+    <section class="screen sweep-screen" id="sweepScreen">
+      <div class="sweep-copy"><p>清平峰 · 春夜</p><h2>一庭落花，一身因果</h2><span>选择一片花，再决定将它留在哪里。</span></div>
+      <div class="sweep-board" id="sweepBoard"><div class="tree-shadow"></div><div id="gamePetals"></div></div>
+      <div class="destinations">
+        <button data-dest="sword"><i>剑</i><b>扫入剑下</b><span>斩断因果 · 获得锋芒</span></button>
+        <button data-dest="lamp"><i>灯</i><b>拢在灯前</b><span>保存记忆 · 解锁人物</span></button>
+        <button data-dest="tree"><i>树</i><b>归于树下</b><span>化作羁绊 · 提高信任</span></button>
+      </div>
+      <div class="sweep-progress"><span>余花</span><i><b id="petalProgress"></b></i><em id="petalsLeft">5</em></div>
+    </section>
+
+    <section class="screen ending-screen" id="endingScreen">
+      <div class="ending-card"><p class="ending-kicker">序章 · 已结</p><h2 id="endingTitle">花落有痕</h2><p id="endingText"></p>
+        <div class="stats" id="endingStats"></div><div class="ending-quote">“你死了。”<br><small>“……我觉得我还能再抢救一下。”</small></div>
+        <div class="ending-actions"><button class="primary" data-action="campaign">继续主线</button><button data-action="replay">再历此劫</button><button data-action="codex">查看人物志</button><button data-action="home">返回题页</button></div>
+      </div>
+    </section>
+
+    <section class="screen campaign-screen" id="campaignScreen">
+      <div class="campaign-head"><div><p>镜花命簿</p><h2>六卷山海</h2></div><span id="campaignProgress">已历 1 / 18 篇</span></div>
+      <div class="volume-tabs" id="volumeTabs"></div>
+      <div class="chapter-grid" id="chapterGrid"></div>
+      <div class="campaign-foot"><span>已完成的篇章可随时重历；主线选择与人物关系会继续保留。</span><button data-action="home">返回题页</button></div>
+    </section>
+
+    <section class="screen episode-screen" id="episodeScreen">
+      <div class="episode-place"><small id="episodeVolume">第一卷</small><h2 id="episodeTitle">阳华云海</h2><p id="episodeRange">原著第 14—54 章</p></div>
+      <div class="episode-bars"><div><span>卫风修为</span><i><b id="cultivationBar"></b></i><em id="cultivationText">炼气</em></div><div><span>师徒默契</span><i><b id="rapportBar"></b></i><em id="rapportText">初识</em></div></div>
+      <div class="episode-portrait" id="episodePortrait"><img src="assets/wei-feng.webp" alt="卫风"></div>
+      <article class="episode-dialogue"><div class="episode-step" id="episodeStep">壹 · 拜师</div><h3 id="episodeSpeaker">卫风</h3><p id="episodeText"></p><div class="episode-choices" id="episodeChoices"></div><button class="episode-next" id="episodeNext">继续</button></article>
+    </section>
+
+    <section class="screen training-screen" id="trainingScreen">
+      <div class="training-copy"><small>清平峰 · 晨课</small><h2>三年结丹，第一日</h2><p>灵息经过发光的经脉节点时点击“运气”。连续完成三次，即可稳住周天。</p></div>
+      <div class="meridian"><div class="meridian-line"><i class="success-zone"></i><b id="qiMarker"></b></div><span id="trainingHint">等待灵息靠近金色区域</span></div>
+      <button class="train-button" id="trainButton">运 气</button><div class="train-score"><span>周天</span><b id="trainScore">○ ○ ○</b></div>
+    </section>
+
+    <section class="screen challenge-screen" id="challengeScreen">
+      <div class="challenge-card">
+        <small id="challengeKicker">第四卷 · 破阵</small><h2 id="challengeTitle">烟雨八阁</h2>
+        <p id="challengeIntro"></p><div class="challenge-progress"><i><b id="challengeProgress"></b></i><span id="challengeCount">0 / 3</span></div>
+        <div class="challenge-prompt" id="challengePrompt"></div><div class="challenge-options" id="challengeOptions"></div>
+        <div class="challenge-feedback" id="challengeFeedback">观察提示后作出选择</div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="drawer" id="codexDrawer" aria-hidden="true"><div class="drawer-head"><div><small>镜花录</small><h2>人物志</h2></div><button data-action="close-drawer">×</button></div><div class="codex-list" id="codexList"></div></aside>
+  <div class="modal" id="settingsModal" aria-hidden="true"><div class="settings-card"><button class="modal-close" data-action="close-settings">×</button><small>游戏设置</small><h2>音律与行卷</h2><label><span>背景音乐</span><input id="musicToggle" type="checkbox" checked><i></i></label><label><span>文字速度</span><select id="textSpeed"><option value="24">舒缓</option><option value="12" selected>适中</option><option value="2">迅疾</option></select></label><button class="danger-link" data-action="clear-save">清除本地进度</button></div></div>
+  <div class="toast" id="toast"></div><audio id="bgm" loop preload="metadata"><source src="assets/theme.mp3" type="audio/mpeg"></audio>
+</div>
+<script src="game.js"></script><script src="campaign.js"></script>
+</body></html>
